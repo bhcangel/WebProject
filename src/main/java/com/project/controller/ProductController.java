@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -171,6 +175,30 @@ public class ProductController {
 		request.setAttribute("ImgList",ImgList);
 
 		return "/Product/CreatorBoardTestResult";
+	}
+	
+	
+	@RequestMapping("display")
+	public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) {
+	
+		//파일을 읽을 경로
+		String uploadPath = "D:\\course\\spring\\upload\\" + fileName;
+		File file = new File(uploadPath);
+
+		//ResponseEntity는 서버에서 응답에대한 내용, 메세지, 정보를 보내줄때 사용합니다.
+		//생성자(보낼데이터, 헤더에 응답정보, 응답상태)
+		ResponseEntity<byte[]> result = null;
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-Type", Files.probeContentType( file.toPath() )); //컨텐트 타입-파일MIME타입
+			
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+		
 	}
 
 
