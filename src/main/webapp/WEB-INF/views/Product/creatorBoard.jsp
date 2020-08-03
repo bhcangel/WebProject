@@ -18,7 +18,7 @@
     
     <section>
     
-        <form action="/project/Product/ProductRegist">
+        <form action="/project/Product/ProductRegist" enctype="multipart/form-data" method="post">
             <h3>STEP 1.</h3>
             <h4>등록할 강좌에 대해 간단한 소개를 적어주세요.</h4>
             <span class="guid">*표시는 필수항목입니다.</span>
@@ -91,7 +91,8 @@
                         <div class="lecture-summary-img">
                            	 이미지이미지
                         </div>
-                        <input type="file" style="display:none" name="ContentList[0].ContentImgBox">
+                        <!-- <input type="file" name="ContentList[0].ContentImgBox"> -->
+                        <input type="file" name="ContentImg">
                         <textarea cols="30" rows="7" name="ContentList[0].ContentTextBox"></textarea>
                     </div>
                     <div class="add-write-button">
