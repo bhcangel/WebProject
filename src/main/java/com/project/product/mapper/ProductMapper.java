@@ -8,6 +8,7 @@ public interface ProductMapper {
 	
 	public int ProductRegist(ProductVO vo);
 	public ProductResultVO getProductInfo(int pno);
+	public int ProductGetNextPno();
 	
 	public int EnrollProduct(EnrollVO enrollVO);
 

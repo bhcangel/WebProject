@@ -21,6 +21,10 @@
       		select * from products where pno = #{pno}
       </select>
       
+      <select id="ProductGetNextPno" resultType="Integer">
+      		select max(pno) from products;
+      </select>
+      
       <insert id="enrollProduct">
       		insert into enroll values(#{pno},#{email})
       </insert>

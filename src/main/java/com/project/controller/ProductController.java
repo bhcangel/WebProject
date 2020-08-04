@@ -51,8 +51,13 @@ public class ProductController {
 			) {
 
 		String uploadFolder = "D:\\course\\spring\\upload"; //업로드경로
-		System.out.println("멀티파트 리스트 사이즈 : " + list.size());
-		System.out.println("멀티컨텐트VO 리스트 사이즈 : " + multicontentVO.getContentList().size());
+		
+		int NextPno = productService.ProductGetNextPno();
+		System.out.println(NextPno);
+		
+		File newFolder = new File("D:\\course\\spring\\upload\\" + (NextPno+1));	
+		newFolder.mkdir();
+		
 
 		try {
 
@@ -67,11 +72,11 @@ public class ProductController {
 				//System.out.println("파일크기:" + size);
 				System.out.println("확장자:" + fileExtension);
 
-				File saveFile = new File(uploadFolder + "\\" + fileRealName);
+				File saveFile = new File(newFolder + "\\" + fileRealName);
 				list.get(i).transferTo(saveFile); //실제 파일을 저장
 
 
-				multicontentVO.getContentList().get(i).setContentImgBox(uploadFolder + "\\" + fileRealName);
+				multicontentVO.getContentList().get(i).setContentImgBox(newFolder + "\\" + fileRealName);
 			}
 
 		} catch (Exception e) {
@@ -117,6 +122,7 @@ public class ProductController {
 
 		int pno = Integer.parseInt(request.getParameter("product"));
 
+
 		ProductResultVO productResultVO = productService.getProductInfo(pno);
 
 
@@ -144,45 +150,67 @@ public class ProductController {
 			i++;
 			qnaAList.add(QnAList[i]);
 		}
-		
-		
+
+
 		System.out.println(contentImgList.toString());
 		System.out.println(contentTextList.toString());
 
-		
-		
-		
-		ArrayList<byte[]> ImgList = new ArrayList<byte[]>();
-		byte[] result = null;
-		try {
-			for(int i = 0; i < contentImgList.size(); i++) {
-				File file = new File(contentImgList.get(i));
-				result = FileCopyUtils.copyToByteArray(file);
-				ImgList.add(result);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 
-		
-		
+
+//
+//		ArrayList<byte[]> ImgList = new ArrayList<byte[]>();
+//		byte[] result = null;
+//		try {
+//			for(int i = 0; i < contentImgList.size(); i++) {
+//				File file = new File(contentImgList.get(i));
+//				result = FileCopyUtils.copyToByteArray(file);
+//				ImgList.add(result);
+//			}
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+
+
+
 		model.addAttribute("productVO",productResultVO);
 		model.addAttribute("contentImgList",contentImgList);
 		model.addAttribute("contentTextList",contentTextList);
 		model.addAttribute("qnaQList",qnaQList);
 		model.addAttribute("qnaAList",qnaAList);
 		//model.addAttribute("ImgList",ImgList);
-		request.setAttribute("ImgList",ImgList);
 
 		return "/Product/CreatorBoardTestResult";
 	}
-	
-	
+
+
 	@RequestMapping("display")
-	public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName) {
-	
+	public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName, HttpServletRequest request) {
+
+		int pno = Integer.parseInt(request.getParameter("product"));
+
+		try {
+			int img = Integer.valueOf(request.getParameter("img"));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		ProductResultVO productResultVO = productService.getProductInfo(pno);
+		
+		
+		String contentStr = productResultVO.getContents();
+		String[] contentList = contentStr.split("&&bhc&&");
+		ArrayList<String> contentImgList = new ArrayList<String>();
+		ArrayList<String> contentTextList = new ArrayList<String>();
+		for(int i = 0; i < contentList.length-1; i++) {
+			contentImgList.add(contentList[i]);
+			i++;
+			contentTextList.add(contentList[i]);
+		}
+		
+
 		//파일을 읽을 경로
-		String uploadPath = "D:\\course\\spring\\upload\\" + fileName;
+		String uploadPath = "D:\\course\\spring\\upload\\멀티로우삽입.png";
 		File file = new File(uploadPath);
 
 		//ResponseEntity는 서버에서 응답에대한 내용, 메세지, 정보를 보내줄때 사용합니다.
@@ -191,14 +219,14 @@ public class ProductController {
 		try {
 			HttpHeaders header = new HttpHeaders();
 			header.add("Content-Type", Files.probeContentType( file.toPath() )); //컨텐트 타입-파일MIME타입
-			
+
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
-		
+
 	}
 
 

@@ -13,6 +13,7 @@ public interface ProductService {
 	
 	public int ProductRegist(IntegratedContentVO integratedVO);
 	public ProductResultVO getProductInfo(int pno);
+	public int ProductGetNextPno();
 	
 	public int EnrollProduct(EnrollVO enrollVO);
 	

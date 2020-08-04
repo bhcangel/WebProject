@@ -22,11 +22,19 @@
 	intro : ${productVO.intro }<br>
 	
 	<hr>
-	
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=0">
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=1">
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=2">
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=3">
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=4">
+	<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=5">
 	contentsImg  <br>
 	<c:forEach var="item" items="${ImgList }">
 		<c:out value="${item }"/><br>
-		
+		<img src="${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=1">
+		<img src="Display/productImgLoad/?pno=${productVO.pno }&img=2">
+		<img src="display">
+		<img src="display">
 	</c:forEach>
 	
 	<hr>
@@ -51,7 +59,8 @@
 	</c:forEach>
 	
 	
-	<button type="button" value="수강하기" onclick="location.href='enrollProduct?pno=${productVO.pno}'"></button>
+	<button type="button" value="수강하기" onclick="location.href='enrollProduct?pno=${productVO.pno}'"></button><br>
+	<button type="button" value="수강하기" onclick="location.href='${pageContext.request.contextPath}/Display/productImgLoad/?pno=${productVO.pno }&img=1'"></button>
 	
 	
 	

@@ -33,11 +33,19 @@ public class ProductServiceImpl implements ProductService{
 		// TODO Auto-generated method stub
 		return sqlsession.selectOne("com.project.product.mapper.getProductInfo",pno);
 	}
+	
+	@Override
+	public int ProductGetNextPno() {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne("com.project.product.mapper.ProductGetNextPno");
+	}
+	
 
 	@Override
 	public int EnrollProduct(EnrollVO enrollVO) {
 		return sqlsession.insert("com.project.product.mapper.enrollProduct",enrollVO);
 	}
+
 	
 	
 	
