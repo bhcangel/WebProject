@@ -16,8 +16,7 @@ import com.project.product.VO.ProductVO;
 @Service("ProductService")
 public class ProductServiceImpl implements ProductService{
 
-	@Autowired
-	ProductDAO productDAO;
+	
 	
 	@Autowired
 	private SqlSession sqlsession;

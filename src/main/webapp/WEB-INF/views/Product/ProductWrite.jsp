@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+    
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +12,14 @@
       
     <script src="${pageContext.request.contextPath}/js/jquery-3.5.1.js"></script>
     <script src="${pageContext.request.contextPath}/js/creatorBoard.js"></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/creatorBoard.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/home.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/utilProduct.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/creatorBoard.css">
 </head>
 <body>
     
     <section>
-    
         <form action="/project/Product/ProductRegist" enctype="multipart/form-data" method="post">
             <h3>STEP 1.</h3>
             <h4>등록할 강좌에 대해 간단한 소개를 적어주세요.</h4>
@@ -34,38 +36,39 @@
                                     <path fill-rule="evenodd" d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094L15.002 9.5V13a1 1 0 0 1-1 1h-12a1 1 0 0 1-1-1v-1zm5-6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                                 </svg>
                             </div>
-                            <input type="file" accept=".jpg, .jpeg, .png" style="display: none;" class="lecture-info-img-input"><br>
+                            <input type="file" accept=".jpg, .jpeg, .png" class="lecture-info-img-input" name="thumb"><br>
                             <span class="guid">섬네일 이미지는 4:3의 비율을 추천합니다.</span><br>
                         </div>
-                        <div>
-                            * 강좌 커버 이미지:<br>
-                            <div class="lecture-cover-img">
-                                <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-image-fill" fill="#b9b9b9" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094L15.002 9.5V13a1 1 0 0 1-1 1h-12a1 1 0 0 1-1-1v-1zm5-6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                </svg>
-                            </div><br>
-                            <span class="guid">커버 이미지는 9:16의 비율을 추천합니다.</span><br>
-                            <input type="file" class="lecture-cover-img-input"><br>
-                        </div>
+                        
                     </div>
+                    
                     * 카테고리 : <select name="category">
-                        <option value="11">1</option>
-                        <option value="22">2</option>
-                        <option value="33">3</option>
-                        <option value="44">4</option>
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
                     </select><br>
-                    <span class="form-notice"></span><br>
-                    * 강사 이름: <input type="text" size="52" name="mentor"><br>
+                    
                     <span class="form-notice"></span><br>
                     * 강좌 제목: <input type="text" size="52" name="title"><br>
-                    <span class="form-notice"></span><br>
+                    
+                   <span class="form-notice"></span><br>
                     * 강좌 소개: <br>
                     <textarea cols="60" rows="7" name="intro"></textarea><br>
                     <span class="form-notice"></span><br>
+                    <div class="lecture-info-date-picker">
+                        * 강좌 기간: <!-- <input type="text" size="15" name="startDate">   ~   <input type="text" size="15" name="endDate"> -->
+                    </div>
+                    		  <input type="hidden" name="term" value="000">
+                    		  <input type="hidden" name="creator" value="000">
+                    * 강좌 가격: <input type="text" size="52" name="price">
+                    * 강좌 분량: <input type="text" size="52" name="volume">
+                    <span class="form-notice"></span>
+                    
                 </div>
                 <div class="lecture-view-info">
                     <div>
-                        <span>예시</span>
+                        <span>미리보기</span>
                         <div class="class-view-minibox">
                             <div class="class-minibox-img"><img src="../img/banner3.jpg" /></div>
                             <div class="class-minibox-info">
@@ -89,10 +92,8 @@
                 <div class="summary-box-space">
                     <div class="lecture-summary">
                         <div class="lecture-summary-img">
-                           	 이미지이미지
                         </div>
-                        <!-- <input type="file" name="ContentList[0].ContentImgBox"> -->
-                        <input type="file" name="ContentImg">
+                        <input type="file"  name="ContentImg">
                         <textarea cols="30" rows="7" name="ContentList[0].ContentTextBox"></textarea>
                     </div>
                     <div class="add-write-button">
@@ -120,7 +121,9 @@
                 </div>
             </div>
             <hr>
-            <button type="submit">등록하기</button>
+            <button class="submit-button" type="submit">등록하기</button>
+            <button class="go-back-button" type="button">돌아가기</button> 
+             
         </form>
 
     </section>

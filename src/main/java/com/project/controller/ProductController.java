@@ -35,28 +35,67 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
-	@RequestMapping("product")
+	@RequestMapping("Product")
 	public String Product() {
-		return "/Product/product";
+		return "/Product/ProductDetail";
 	}
 
-	@RequestMapping("creatorBoard")
+	@RequestMapping("ProductWrite")
 	public String creatorBoard() {
-		return "/Product/creatorBoard";
+		//강좌 등록 화면
+		return "/Product/ProductWrite";
 	}
 
 	@RequestMapping("ProductRegist")
-	public String ProductRegist(ProductVO productVO, MultiContentVO multicontentVO, MultiQnAVO multiqnaVO,
-			@RequestParam("ContentImg") List<MultipartFile> list 
+	public String ProductRegist(ProductVO productVO,
+			MultiContentVO multicontentVO, MultiQnAVO multiqnaVO,
+			@RequestParam("thumb") MultipartFile thumb,
+			@RequestParam("ContentImg") List<MultipartFile> list
+													 
 			) {
-
-		String uploadFolder = "D:\\course\\spring\\upload"; //업로드경로
 		
-		int NextPno = productService.ProductGetNextPno();
+		System.out.println(productVO.getTitle());
+		
+		System.out.println("1111111");
+		System.out.println("1111111");
+		System.out.println("1111111");
+		System.out.println("1111111");
+		System.out.println("1111111");
+		System.out.println("1111111");
+		
+		//, @RequestParam("thumbnail") MultipartFile thumb 
+		//, @RequestParam("ContentImg") List<MultipartFile> list
+		//여기서 할려는게 upload폴더 안에 "강좌 번호(pno)로 하위 폴더를 만들어서" 글에 포함된 이미지를 저장하는것입니다
+		//근데 글을 쓸 당시에는 강좌번호(pno)가 없으므로 폴더를 만들 수도 없어요
+		//그래서 productService.ProductGetNextPno()를 호출을 하는데 이것은
+		//DB에서 현재 가장 높은 강좌번호를 얻는 메소드입니다. 강좌 등록시에는 여기다가 1을 더해서 글번호로 삼고 폴더를 만들어 이미지를 저장합니다.
+		int NextPno = 0;
+		try {
+		NextPno = productService.ProductGetNextPno();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		System.out.println(NextPno);
 		
 		File newFolder = new File("D:\\course\\spring\\upload\\" + (NextPno+1));	
 		newFolder.mkdir();
+
+		
+		
+		try {
+			String fileRealName = thumb.getOriginalFilename(); //실제파일명
+			
+			File saveFile = new File(newFolder + "\\" + fileRealName );
+			thumb.transferTo(saveFile); //실제 파일을 저장해주는 메서드 filewriter작업을 손쉽게 해주는 스프링 메서드
+			
+			productVO.setThumbnail(newFolder + "\\" + fileRealName);
+			
+			System.out.println("thumb : "  + productVO.getThumbnail());
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
 
 		try {
@@ -113,7 +152,7 @@ public class ProductController {
 		 * 
 		 */
 
-		return "/Product/creatorBoard";
+		return "/Product/ProductWrite";
 	}
 
 	@RequestMapping("CreatorBoardTestResult")
@@ -157,19 +196,6 @@ public class ProductController {
 
 
 
-//
-//		ArrayList<byte[]> ImgList = new ArrayList<byte[]>();
-//		byte[] result = null;
-//		try {
-//			for(int i = 0; i < contentImgList.size(); i++) {
-//				File file = new File(contentImgList.get(i));
-//				result = FileCopyUtils.copyToByteArray(file);
-//				ImgList.add(result);
-//			}
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-
 
 
 		model.addAttribute("productVO",productResultVO);
@@ -183,51 +209,7 @@ public class ProductController {
 	}
 
 
-	@RequestMapping("display")
-	public ResponseEntity<byte[]> display(@RequestParam("fileName") String fileName, HttpServletRequest request) {
-
-		int pno = Integer.parseInt(request.getParameter("product"));
-
-		try {
-			int img = Integer.valueOf(request.getParameter("img"));
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		ProductResultVO productResultVO = productService.getProductInfo(pno);
-		
-		
-		String contentStr = productResultVO.getContents();
-		String[] contentList = contentStr.split("&&bhc&&");
-		ArrayList<String> contentImgList = new ArrayList<String>();
-		ArrayList<String> contentTextList = new ArrayList<String>();
-		for(int i = 0; i < contentList.length-1; i++) {
-			contentImgList.add(contentList[i]);
-			i++;
-			contentTextList.add(contentList[i]);
-		}
-		
-
-		//파일을 읽을 경로
-		String uploadPath = "D:\\course\\spring\\upload\\멀티로우삽입.png";
-		File file = new File(uploadPath);
-
-		//ResponseEntity는 서버에서 응답에대한 내용, 메세지, 정보를 보내줄때 사용합니다.
-		//생성자(보낼데이터, 헤더에 응답정보, 응답상태)
-		ResponseEntity<byte[]> result = null;
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-Type", Files.probeContentType( file.toPath() )); //컨텐트 타입-파일MIME타입
-
-			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
-
-	}
+	
 
 
 	//강의 등록							//권한 필터 필요

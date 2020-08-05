@@ -9,8 +9,7 @@ import com.project.user.VO.UserVO;
 @Service("UserService")
 public class UserServiceImpl implements UserService{
 
-	@Autowired
-	UserDAO userDAO;
+	
 	
 	@Autowired
 	private SqlSession sqlsession;

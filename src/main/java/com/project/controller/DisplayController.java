@@ -14,7 +14,7 @@ import com.project.product.VO.ProductResultVO;
 import com.project.product.service.ProductService;
 
 @Controller
-@RequestMapping("/Display")
+@RequestMapping("/Display")		//이미지 화면 출력 전용 컨트롤러
 public class DisplayController {
 	
 	@Autowired

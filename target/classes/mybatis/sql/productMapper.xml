@@ -12,8 +12,8 @@
       </insert> -->
       
       <insert id="ProductRegist">
-      		Insert into products (title, mentor, category, intro, contents, QnA)
-      		values(#{productVO.title}, #{productVO.mentor}, #{productVO.category}, #{productVO.intro}, #{multicontentVO.listStr}, #{multiqnaVO.qnAListStr})
+      		Insert into products (title, category, intro, volume, price, contents, qna, term, creator, thumbnail)
+      		values(#{productVO.title}, #{productVO.category}, #{productVO.intro}, #{productVO.volume}, #{productVO.price}, #{multicontentVO.listStr}, #{multiqnaVO.qnAListStr}, #{productVO.term}, #{productVO.creator}, #{productVO.thumbnail} )
       </insert>
       
       
